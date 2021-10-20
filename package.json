@@ -9,5 +9,6 @@
   "templateVersion": "0.28.19",
   "dependencies": {
     "pg": "^8.7.1"
-  }
+  },
+  "devDependencies": {}
 }

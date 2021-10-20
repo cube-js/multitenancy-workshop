@@ -13,9 +13,6 @@ if (supplier_id === 1) {
   }
 };
 
-console.log(customMeasures);
-
-
 cube(`Orders`, {
   sql: `SELECT * FROM public.orders`,
   preAggregations: {// Pre-Aggregations definitions go here
