@@ -1,3 +1,4 @@
+// maybe will be merchant in the future
 cube(`Suppliers`, {
   sql: `SELECT * FROM public.suppliers`,
   

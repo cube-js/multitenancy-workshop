@@ -7,5 +7,7 @@
   },
   "template": "docker",
   "templateVersion": "0.28.19",
-  "devDependencies": {}
+  "dependencies": {
+    "pg": "^8.7.1"
+  },
 }
