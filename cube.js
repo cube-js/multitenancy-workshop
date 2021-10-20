@@ -18,17 +18,17 @@ const pool = new Pool({
   database: process.env.CUBEJS_DB_NAME,
 });
 
-const statusesQuery = `
-  SELECT DISTINCT status
-  FROM public.orders
+const suppliersQuery = `
+  SELECT DISTINCT id
+  FROM public.suppliers
 `;
 
-exports.fetchStatuses = async () => {
+fetchSuppliers = async () => {
   const client = await pool.connect();
-  const result = await client.query(statusesQuery);
+  const result = await client.query(suppliersQuery);
   client.release();
 
-  return result.rows.map((row) => row.status);
+  return result.rows.map((row) => row.id);
 };
 
 module.exports = {
@@ -89,4 +89,11 @@ module.exports = {
     //     },
     //   },
     // ],
+    // dynamic example
+    scheduledRefreshContexts: async () => {
+      const supplier_ids = await fetchSuppliers()
+      return supplier_ids.map((id) => { 
+        return { securityContext: { supplier_id: id } }
+      })
+    }
 };

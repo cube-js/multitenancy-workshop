@@ -1,3 +1,21 @@
+const {
+  securityContext: { supplier_id },
+} = COMPILE_CONTEXT;
+
+const customMeasures = {};
+// change it later to specific product name
+if (supplier_id === 1) {
+  customMeasures[`processingCount`] = {
+    type: `count`,
+    filters: [
+      { sql: (CUBE) => `${CUBE}.status = 'processing'` }
+    ]
+  }
+};
+
+console.log(customMeasures);
+
+
 cube(`Orders`, {
   sql: `SELECT * FROM public.orders`,
   preAggregations: {// Pre-Aggregations definitions go here
@@ -20,16 +38,18 @@ cube(`Orders`, {
       relationship: `belongsTo`
     }
   },
-  measures: {
-    count: {
-      type: `count`,
-      drillMembers: [id, createdAt]
+  measures: Object.assign(
+    {
+      count: {
+        type: `count`,
+      },
+      number: {
+        sql: (CUBE) => `number`,
+        type: `sum`
+      }
     },
-    number: {
-      sql: `number`,
-      type: `sum`
-    }
-  },
+    customMeasures
+  ),
   dimensions: {
     id: {
       sql: `id`,
