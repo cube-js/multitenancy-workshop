@@ -4,7 +4,7 @@ const {
 
 const customMeasures = {};
 // change it later to specific product name
-if (supplier_id === 1) {
+if (parseInt(supplier_id, 10) === 1) {
   customMeasures[`processingCount`] = {
     type: `count`,
     filters: [
