@@ -35,7 +35,10 @@ cube(`Orders`, {
       measures: [ Orders.count ],
       dimensions: [ Merchants.id ],
       timeDimension: Orders.createdAt,
-      granularity: `day`
+      granularity: `day`,
+      refreshKey: {
+        every: `1 minute`
+      }
     }
   },
 
