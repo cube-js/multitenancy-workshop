@@ -4,6 +4,7 @@ const {
 
 const customMeasures = {};
 if (parseInt(merchant_id, 10) === 1) {
+  // Only this tenant has orders with the "processing" status 
   customMeasures[`processingCount`] = {
     type: `count`,
     filters: [
@@ -25,10 +26,6 @@ cube(`Orders`, {
     }
   },
   joins: {
-    Users: {
-      sql: `${CUBE}.user_id = ${Users}.id`,
-      relationship: `belongsTo`
-    },
     Products: {
       sql: `${CUBE}.product_id = ${Products}.id`,
       relationship: `belongsTo`
