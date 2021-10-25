@@ -25,7 +25,8 @@ if (parseInt(merchant_id, 10) === 1) {
 };
 
 cube(`Orders`, {
-  sql: `SELECT * FROM public.orders`,
+  sql: `SELECT * FROM public.orders
+        where merchant_id = ${merchant_id}`,
 
   preAggregations: {
     // Pre-Aggregations definitions go here
