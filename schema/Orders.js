@@ -1,10 +1,9 @@
 const {
-  securityContext: { supplier_id },
+  securityContext: { merchant_id },
 } = COMPILE_CONTEXT;
 
 const customMeasures = {};
-// change it later to specific product name
-if (parseInt(supplier_id, 10) === 1) {
+if (parseInt(merchant_id, 10) === 1) {
   customMeasures[`processingCount`] = {
     type: `count`,
     filters: [
@@ -20,7 +19,7 @@ cube(`Orders`, {
 
     main: {
       measures: [Orders.count],
-      dimensions: [Suppliers.id],
+      dimensions: [Merchants.id],
       timeDimension: Orders.createdAt,
       granularity: `day`
     }
