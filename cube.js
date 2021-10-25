@@ -125,8 +125,9 @@ const merchantsQuery = `
 
 const fetchMerchants = async () => {
   const client = await pool.connect();
-  const result = await client.query(merchantsQuery);
-  client.release();
-
-  return result.rows.map((row) => row.id);
+  try {
+    return await client.query(merchantsQuery);
+  } finally {
+    client.release();
+  }
 };
