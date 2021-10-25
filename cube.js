@@ -123,7 +123,7 @@ const merchantsQuery = `
   FROM public.merchants
 `;
 
-fetchMerchants = async () => {
+const fetchMerchants = async () => {
   const client = await pool.connect();
   const result = await client.query(merchantsQuery);
   client.release();
