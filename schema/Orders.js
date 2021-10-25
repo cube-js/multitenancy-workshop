@@ -31,7 +31,7 @@ cube(`Orders`, {
     // Pre-Aggregations definitions go here
     // Learn more here: https://cube.dev/docs/caching/pre-aggregations/getting-started  
 
-    main: {
+    mainRollup: {
       measures: [ Orders.count ],
       dimensions: [ Merchants.id ],
       timeDimension: Orders.createdAt,
