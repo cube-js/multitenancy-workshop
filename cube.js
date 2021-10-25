@@ -14,9 +14,6 @@ module.exports = {
     /* Part 1. Enforcing tenant-aware filters on all queries */
     /* ----------------------------------------------------- */
 
-    // Configure Cube to treat every tenant independently
-    contextToAppId: ({ securityContext }) => `CUBEJS_APP_${securityContext.merchant_id}`,
-
     // Apply a tenant-aware filter to all queries
     queryRewrite: (query, { securityContext }) => {
       // Ensure that the security context has the `merchant_id` property
@@ -35,7 +32,13 @@ module.exports = {
       return query;
     },
 
-    // Provide tenant-aware access to data sources 
+    // Provide tenant-aware access to data sources
+
+    // Now configure Cube to treat every tenant independently
+    // this is required for different database connections
+    contextToAppId: ({ securityContext }) => `CUBEJS_APP_${securityContext.merchant_id}`,
+
+    // define driverFactory for the two databases
     driverFactory: ({ securityContext }) => {
       // Ensure that the security context has the `merchant_id` property
       if (!securityContext.merchant_id) {
