@@ -1,21 +1,28 @@
 // Cube.js configuration options: https://cube.dev/docs/config
 
+// Default data source credentials.
+// See Settings -> Env vars to review or update them
+const host     = process.env.CUBEJS_DB_HOST;
+const port     = process.env.CUBEJS_DB_PORT;
+const database = process.env.CUBEJS_DB_NAME;
+const user     = process.env.CUBEJS_DB_USER;
+const password = process.env.CUBEJS_DB_PASS;
+
 // NOTE: third-party dependencies and the use of require(...) are disabled for
 // CubeCloud users by default.  Please contact support if you need them
 // enabled for your account.  You are still allowed to require
 // @cubejs-backend/*-driver packages.
 
-// TODO: Igor will create second database
 const PostgresDriver = require('@cubejs-backend/postgres-driver');
 
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  host: process.env.CUBEJS_DB_HOST,
-  port: process.env.CUBEJS_DB_PORT,
-  user: process.env.CUBEJS_DB_USER,
-  password: process.env.CUBEJS_DB_PASS,
-  database: process.env.CUBEJS_DB_NAME,
+  host,
+  port,
+  user,
+  password,
+  database,
 });
 
 const suppliersQuery = `
@@ -55,21 +62,21 @@ module.exports = {
       }
 
       if (securityContext.supplier_id === 1) {
-        // TODO: Igor will provide a real database here
         return new PostgresDriver({
-          database: 'ecom',
-          host: 'demo-db-recipes.cube.dev',
-          user: 'cube',
-          password: '12345',
-          port: '5432',
+          // A separate database used by this tenant:
+          database: 'multitenancy_workshop_aux',
+          host,
+          user,
+          password,
+          port,
         });
       } else {
         return new PostgresDriver({
-          database: 'ecom',
-          host: 'demo-db.cube.dev',
-          user: 'cube',
-          password: '12345',
-          port: '5432',
+          database,
+          host,
+          user,
+          password,
+          port,
         });
       }
     },
