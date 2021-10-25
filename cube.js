@@ -34,9 +34,11 @@ module.exports = {
 
     // Provide tenant-aware access to data sources
 
-    // Now configure Cube to treat every tenant independently
+    // Now configure Cube to treat every tenant independently, by appId
     // this is required for different database connections
     contextToAppId: ({ securityContext }) => `CUBEJS_APP_${securityContext.merchant_id}`,
+    // we also must configure preAggregationsSchema to prevent preAggregation conflicts on the same table
+    preAggregationsSchema: ({ securityContext }) => `pre_aggregations_${securityContext.merchant_id}`,
 
     // define driverFactory for the two databases
     driverFactory: ({ securityContext }) => {
