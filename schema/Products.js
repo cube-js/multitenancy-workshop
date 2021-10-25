@@ -7,8 +7,8 @@ cube(`Products`, {
   },
   
   joins: {
-    Suppliers: {
-      sql: `${CUBE}.supplier_id = ${Suppliers}.id`,
+    Merchants: {
+      sql: `${CUBE}.merchant_id = ${Merchants}.id`,
       relationship: `belongsTo`
     },
     

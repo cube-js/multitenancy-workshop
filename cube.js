@@ -25,14 +25,14 @@ const pool = new Pool({
   database,
 });
 
-const suppliersQuery = `
+const merchantsQuery = `
   SELECT DISTINCT id
-  FROM public.suppliers
+  FROM public.merchants
 `;
 
-fetchSuppliers = async () => {
+fetchMerchants = async () => {
   const client = await pool.connect();
-  const result = await client.query(suppliersQuery);
+  const result = await client.query(merchantsQuery);
   client.release();
 
   return result.rows.map((row) => row.id);
@@ -41,29 +41,29 @@ fetchSuppliers = async () => {
 module.exports = {
     queryRewrite: (query, { securityContext }) => {
       // Ensure `securityContext` has an `id` property
-      if (!securityContext.supplier_id) {
-        throw new Error('No Supplier ID found in Security Context!');
+      if (!securityContext.merchant_id) {
+        throw new Error('No Merchant ID found in Security Context!');
       }
 
       query.filters.push({
-        member: "Suppliers.id", // or id
+        member: "Merchants.id",
         operator: "equals",
-        values: [securityContext.supplier_id]
+        values: [ securityContext.merchant_id ]
       });
 
       return query;
     },
 
-    contextToAppId: ({ securityContext }) => `CUBEJS_APP_${securityContext.supplier_id}`,
+    contextToAppId: ({ securityContext }) => `CUBEJS_APP_${securityContext.merchant_id}`,
 
     driverFactory: ({ securityContext }) => {
-      if (!securityContext.supplier_id) {
-        throw new Error('No Supplier ID found in Security Context!');
+      if (!securityContext.merchant_id) {
+        throw new Error('No Merchant ID found in Security Context!');
       }
 
-      if (securityContext.supplier_id === 1) {
+      if (securityContext.merchant_id === 1) {
         return new PostgresDriver({
-          // A separate database used by this tenant:
+          // This tenant uses a separate database:
           database: 'multitenancy_workshop_aux',
           host,
           user,
@@ -87,20 +87,21 @@ module.exports = {
     // scheduledRefreshContexts: async () => [
     //   {
     //     securityContext: {
-    //       supplier_id: 1,
+    //       merchant_id: 1,
     //     },
     //   },
     //   {
     //     securityContext: {
-    //       supplier_id: 2,
+    //       merchant_id: 2,
     //     },
     //   },
     // ],
     // dynamic example
     scheduledRefreshContexts: async () => {
-      const supplier_ids = await fetchSuppliers()
-      return supplier_ids.map((id) => { 
-        return { securityContext: { supplier_id: id } }
+      const merchantIds = await fetchMerchants();
+
+      return merchantIds.map((id) => { 
+        return { securityContext: { merchant_id: id } }
       })
     }
 };

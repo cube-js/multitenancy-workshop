@@ -1,6 +1,5 @@
-// maybe will be merchant in the future
-cube(`Suppliers`, {
-  sql: `SELECT * FROM public.suppliers`,
+cube(`Merchants`, {
+  sql: `SELECT * FROM public.merchants`,
   
   preAggregations: {
     // Pre-Aggregations definitions go here
