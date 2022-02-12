@@ -39,6 +39,14 @@ cube(`Orders`, {
       refreshKey: {
         every: `1 minute`
       }
+    },
+
+    month: {
+      measures: [ Orders.count ],
+      dimensions: [ Orders.status ],
+      timeDimension: Orders.createdAt,
+      granularity: `day`,
+      partitionGranularity: `month`
     }
   },
 
