@@ -37,8 +37,9 @@ cube(`Orders`, {
       timeDimension: Orders.createdAt,
       granularity: `day`,
       refreshKey: {
-        every: `1 minute`
-      }
+        every: `1 day`
+      },
+      //meta: 'help'
     },
 
     month: {
